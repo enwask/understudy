@@ -17,8 +17,8 @@ class db:
         type=MongoDBConnection,
     )
 
-    ratings_by_professor = st.connection(
+    ratings = st.connection(
         'mongodb',
-        collection='ratings_by_professor',
+        collection='ratings',
         type=MongoDBConnection,
     )
