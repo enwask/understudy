@@ -169,10 +169,10 @@ async def get_professors(school_id: str = _SCHOOL_ID) -> dict[str, Professor]:
         # (we throw away reviews that specify an incorrect code)
         courses: set[str] = set()
         for course in node['courseCodes']:
-            code = course['courseName']
+            code: str = course['courseName']
             if code and re.match(r'^[A-Za-z]{3}\d{4}[A-Za-z]?$', code):
                 # If there's an extra letter on the end (H or C), just drop it
-                courses.add(code[:7])
+                courses.add(code[:7].upper())
 
         # Create the professor instance
         professors[id] = Professor(
