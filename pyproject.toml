@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "understudy"
+version = "0.1.0"
+description = "Informed professor choices"
+authors = ["enwask <enwask@ucf.edu>"]
+readme = "readme.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+beautifulsoup4 = "^4.12.3"
+canvasapi = "^3.0.0"
+numpy = "^2.1.1"
+requests = "^2.32.3"
+streamlit = "^1.39.0"
+streamlit-oauth = "^0.1.13"
+aiohttp = "^3.10.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
