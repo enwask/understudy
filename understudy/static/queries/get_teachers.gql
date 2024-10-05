@@ -1,0 +1,35 @@
+query TeacherSearchPaginationQuery(
+  $count: Int!
+  $cursor: String
+  $query: TeacherSearchQuery!
+) {
+    result: newSearch {
+        teachers(query: $query, first: $count, after: $cursor) {
+            didFallback
+            resultCount
+
+            edges {
+                node {
+                    id
+                    firstName
+                    lastName
+                    department
+
+                    legacyId
+                    avgRating
+                    avgDifficulty
+                    wouldTakeAgainPercent
+
+                    courseCodes {
+                        courseName
+                        courseCount
+                    }
+                }
+            }
+
+            pageInfo {
+                endCursor
+            }
+        }
+    }
+}

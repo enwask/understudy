@@ -1,0 +1,9 @@
+query TeacherSearchPaginationQuery(
+  $query: TeacherSearchQuery!
+) {
+    result: newSearch {
+        teachers(query: $query, first: 1) {
+            resultCount
+        }
+    }
+}
