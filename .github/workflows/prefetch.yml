@@ -1,0 +1,27 @@
+name: Prefetch RMP data
+
+on:
+    workflow_dispatch:
+
+jobs:
+    prefetch-rmp:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Set up Python
+              uses: actions/setup-python@v2
+              with:
+                  python-version: 3.12
+
+            - name: Set up Poetry
+              uses: abatilo/actions-poetry@v2
+              with:
+                poetry-version: 1.8.3
+
+            - name: Install dependencies
+              run: poetry install
+
+            - name: Run prefetch script
+              run: poetry run python understudy/prefetch.py
