@@ -26,7 +26,7 @@ jobs:
             - name: Load secrets
               env:
                 STREAMLIT_SECRETS_TOML: ${{ secrets.STREAMLIT_SECRETS_TOML }}
-              run:
+              run: |
                 mkdir -p .streamlit
                 echo "$STREAMLIT_SECRETS_TOML" > .streamlit/secrets.toml
 
