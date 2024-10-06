@@ -13,7 +13,7 @@ def collect_courses(min_occurences: int) -> list[str]:
     """
 
     # return db.ratings.distinct('course')
-    return [
+    return sorted([
         doc['course']
         for doc in db.ratings.aggregate([
             {
@@ -38,7 +38,7 @@ def collect_courses(min_occurences: int) -> list[str]:
                 }
             }
         ])
-    ]
+    ])
 
 
 def collect_sections(

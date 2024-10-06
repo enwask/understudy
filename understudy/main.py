@@ -5,19 +5,16 @@ import streamlit as st
 
 from understudy.api.courses.lookup import collect_courses, collect_sections
 
+
+# Min thresholds for displaying tags/courses
 _TAG_THRESHOLD = 10
 _COURSE_THRESHOLD = 10
 
-# Styling
-_static_root: str = os.path.join(
-    os.path.dirname(__file__),
-    'static',
-)
+
+# Hacky styling
+_static_root: str = os.path.join(os.path.dirname(__file__), 'static')
 with open(os.path.join(_static_root, 'styles.css'), 'r') as f:
-    st.markdown(
-        "<style>%s</style>" % f.read(),
-        unsafe_allow_html=True,
-    )
+    st.markdown("<style>%s</style>" % f.read(), unsafe_allow_html=True)
 
 
 # Main title
@@ -34,6 +31,7 @@ course = st.selectbox(
 )
 if not course:
     st.stop()
+
 
 # Search / filter container
 with st.expander(
@@ -148,17 +146,36 @@ for section in sections:
         wtags = [
             "<span class='tag-badge'>%s</span>" % tag
             for tag, num in section.meta.tags.items()
-            if num >= _TAG_THRESHOLD
+            if num >= _TAG_THRESHOLD or tag in tag_filter
         ]
         if len(wtags) > 0:
             st.write(
                 ''.join(wtags),
                 unsafe_allow_html=True,
             )
+            st.divider()
+
+        # Display section metadata
+        l, r = st.columns([1, 2])
+        l.write("Mean quality rating: **%.2f**" % section.quality)
+        r.progress(section.quality / 5.0)
+
+        l, r = st.columns([1, 2])
+        l.write("Mean difficulty rating: **%.2f**" % section.difficulty)
+        r.progress(section.difficulty / 5.0)
+
+        l, r = st.columns([1, 2])
+        l.write("**%.0f%%** would take again" % section.professor.take_again)
+        r.progress(section.professor.take_again / 100.0)
+
+        st.write(
+            "<span class='righty'>(from %d ratings)</span>"
+            % len(section.ratings),
+            unsafe_allow_html=True
+        )
+        st.divider()
 
         # Display the box plot
-        st.write("Quality/difficulty distribution (from %d ratings):"
-                 % len(section.ratings))
         st.plotly_chart(
             fig,
             use_container_width=True,
@@ -175,106 +192,7 @@ for section in sections:
             label="RateMyProfessor",
             icon=':material/open_in_new:',
         )
+
+
 if not matches:
     st.write("No sections match the selected criteria.")
-
-# # Create a combined dataframe for values to plot
-# data: list[tuple[str, float, str]] = []  # (professor, value, type of value)
-# for section in sections:
-#     data.extend([
-#         (section.professor.name, r.quality, 'quality')
-#         for r in section.ratings
-#     ])
-#     data.extend([
-#         (section.professor.name, r.difficulty, 'difficulty')
-#         for r in section.ratings
-#     ])
-
-# df = pd.DataFrame(
-#     data,
-#     columns=['professor', 'value', 'type'],
-# )
-
-
-# # Make the plot (lol)
-# fig = px.box(
-#     df,
-#     x='value',
-#     y='professor',
-#     color='type',
-#     title='Quality/difficulty ratings by professor',
-# )
-# fig.update_traces(orientation='h')
-# fig.update_layout(
-#     showlegend=False,
-#     xaxis_title='',
-#     yaxis_title='',
-# )
-# # fig.update_xaxes(title_text='')
-# # fig.update_yaxes(visible=False)
-# st.plotly_chart(
-#     fig,
-#     theme=None,
-# )
-
-
-
-# def _boxplot() -> alt.Chart:
-#     return alt.Chart(section.frame).mark_boxplot(box={
-#         'cornerRadius': 8,
-#         'fillOpacity': 0.8,
-#     })
-
-
-# # Create charts for quality and difficulty
-# charts = []
-# for i, section in enumerate(sections):
-#     # x will just be a position based on i
-#     # y will be the quality
-#     # we do this twice, once for quality and once for difficulty
-
-#     # make the color interpolate between pastel rainbow colors
-#     qual = _boxplot().encode(
-#         alt.XValue(2 * i),
-#         alt.Y(
-#             'quality:Q',
-#             title="Quality"
-#         ),
-#         alt.Color(
-#             'x:Q',
-#             scale=alt.Scale(scheme='rainbow'),
-#             legend=None,
-#         ),
-#     )
-#     diff = _boxplot().encode(
-#         alt.XValue(2 * i + 1),
-#         alt.Y(
-#             'difficulty:Q',
-#             title="Difficulty"
-#         ),
-#         alt.Color(
-#             'x:Q',
-#             scale=alt.Scale(
-#                 scheme='rainbow',
-#                 domain=[0, 2 * len(sections)],
-#             ),
-#             legend=None,
-#         ),
-#     )
-#     charts.append(qual + diff)
-
-#     # chart = alt.Chart(section.frame).mark_point().encode(
-#     #     x='quality',
-#     #     y='difficulty',
-#     #     color='num_ratings',
-#     #     tooltip=['professor', 'quality', 'difficulty', 'num_ratings'],
-#     # ).properties(
-#     #     title=section.professor.name,
-#     # ).interactive()
-#     # charts.append(chart)
-
-# # Display all charts together
-# st.altair_chart(
-#     alt.layer(*charts),
-#     use_container_width=True,
-# )

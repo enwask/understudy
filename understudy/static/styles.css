@@ -8,6 +8,10 @@ p {
     font-size: 16px !important;
 }
 
+.stMarkdown p {
+    margin-bottom: 0 !important;
+}
+
 div[data-testid="stSelectbox"] {
     >div>div {
         padding: 6px 6px !important;
@@ -30,9 +34,9 @@ div[data-testid="stExpander"]:not(:has(#filter-marker)) {
         font-size: 24px !important;
     }
 
-    /* a[data-testid="stPageLink-NavLink"] {
+    a[data-testid="stPageLink-NavLink"] {
         align-self: end;
-    } */
+    }
 
     svg[data-testid="stExpanderToggleIcon"] {
         /* kill me */
@@ -40,12 +44,18 @@ div[data-testid="stExpander"]:not(:has(#filter-marker)) {
     }
 }
 
+span.righty {
+    height: 0 !important;
+    float: right;
+    transform: translateY(16px);
+}
+
 span.tag-badge {
     display: inline-flex;
     align-items: center;
     box-sizing: border-box;
 
-    margin: 2px 6px 2px 0;
+    margin: 4px 6px 4px 0;
     padding: 2px 8px;
     border-radius: 4px;
 

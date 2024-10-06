@@ -1,22 +1,21 @@
 [tool.poetry]
 name = "understudy"
 version = "0.1.0"
-description = "Informed professor choices"
+description = "Choose professors, wisely."
 authors = ["enwask <enwask@ucf.edu>"]
 readme = "readme.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+aiohttp = "^3.10.9"
 beautifulsoup4 = "^4.12.3"
 canvasapi = "^3.0.0"
 numpy = "^2.1.2"
-requests = "^2.32.3"
-streamlit = "^1.39.0"
-aiohttp = "^3.10.9"
-st-mongo-connection = "^1.0.3"
 pandas = "^2.2.3"
-altair = "^5.4.1"
 plotly = "^5.24.1"
+requests = "^2.32.3"
+st-mongo-connection = "^1.0.3"
+streamlit = "^1.39.0"
 
 
 [build-system]
