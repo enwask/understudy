@@ -1,8 +1,11 @@
 import asyncio
+import logging
 
 from understudy.api.mongo.client import db
 from understudy.api.rmp.data import get_professors, get_ratings
 from understudy.api.rmp.rating import Rating
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 async def main() -> None:
