@@ -4,7 +4,41 @@ from understudy.api.mongo.client import db
 from understudy.api.rmp.professor import Professor
 from understudy.api.rmp.rating import Rating, RatingSet
 
-__all__ = ['collect_sections']
+__all__ = ['collect_courses', 'collect_sections']
+
+
+def collect_courses(min_occurences: int) -> list[str]:
+    """
+    Returns a list of courses for which we have ratings data.
+    """
+
+    # return db.ratings.distinct('course')
+    return [
+        doc['course']
+        for doc in db.ratings.aggregate([
+            {
+                '$group': {
+                    '_id': "$course",
+                    'count': {
+                        '$sum': 1
+                    }
+                }
+            },
+            {
+                '$match': {
+                    'count': {
+                        '$gte': min_occurences
+                    }
+                }
+            },
+            {
+                '$project': {
+                    '_id': 0,
+                    'course': "$_id"
+                }
+            }
+        ])
+    ]
 
 
 def collect_sections(
