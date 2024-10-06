@@ -78,7 +78,7 @@ with st.expander(
         min_reviews=min_reviews,
         min_quality=min_quality,
         max_difficulty=max_difficulty,
-        min_take_again=50,
+        min_take_again=min_take_again,
     )
 
     # Find set of all tags any section has
