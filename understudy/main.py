@@ -5,6 +5,9 @@ import streamlit as st
 
 from understudy.api.courses.lookup import collect_courses, collect_sections
 
+_TAG_THRESHOLD = 10
+_COURSE_THRESHOLD = 10
+
 # Styling
 _static_root: str = os.path.join(
     os.path.dirname(__file__),
@@ -25,7 +28,7 @@ st.divider()
 # Course code selection
 course = st.selectbox(
     "Select a course:",
-    options=collect_courses(min_occurences=10),
+    options=collect_courses(min_occurences=_COURSE_THRESHOLD),
     index=None,
     placeholder="Enter a course code...",
 )
@@ -85,7 +88,8 @@ with st.expander(
     for section in sections:
         for tag, num in section.meta.tags.items():
             tags_dict[tag] = tags_dict.get(tag, 0) + num
-    tags = sorted([tag for tag, num in tags_dict.items() if num >= 5])
+    tags = sorted([tag for tag, num in tags_dict.items()
+                   if num >= _TAG_THRESHOLD])
 
     # Filter sections by tags
     tag_filter = st.multiselect(
@@ -140,6 +144,19 @@ for section in sections:
         section.professor.name,
         expanded=True,
     ):
+        # Display tags for this section
+        wtags = [
+            "<span class='tag-badge'>%s</span>" % tag
+            for tag, num in section.meta.tags.items()
+            if num >= _TAG_THRESHOLD
+        ]
+        if len(wtags) > 0:
+            st.write(
+                ''.join(wtags),
+                unsafe_allow_html=True,
+            )
+
+        # Display the box plot
         st.write("Quality/difficulty distribution (from %d ratings):"
                  % len(section.ratings))
         st.plotly_chart(
@@ -149,6 +166,14 @@ for section in sections:
             config={
                 'displayModeBar': False,
             }
+        )
+
+        # Display an RMP link for the professor
+        st.page_link(
+            "https://www.ratemyprofessors.com/search/professors/1082?q=%s"
+            % section.professor.name,
+            label="RateMyProfessor",
+            icon=':material/open_in_new:',
         )
 if not matches:
     st.write("No sections match the selected criteria.")
