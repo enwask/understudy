@@ -1,0 +1,39 @@
+h1 {
+    font-size: 90px !important;
+    margin-left: -4px !important;
+    margin-bottom: -64px !important;
+}
+
+p {
+    font-size: 16px !important;
+}
+
+div[data-testid="stSelectbox"] {
+    >div>div {
+        padding: 6px 6px !important;
+        height: 3.2rem;
+    }
+}
+
+/* lol, lmao */
+div[data-testid="stMultiSelect"] {
+    >div>div>div>div {
+        padding: 5px 8px !important;
+    }
+    svg[title="open"] {
+        display: none;
+    }
+}
+
+div[data-testid="stExpander"]:not(:has(#filter-marker)) {
+    details summary p {
+        font-size: 24px !important;
+    }
+
+    svg[data-testid="stExpanderToggleIcon"] {
+        /* kill me */
+        transform: translateY(10px) scale(1.5);
+    }
+}
+
+
