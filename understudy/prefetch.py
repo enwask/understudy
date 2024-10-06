@@ -5,7 +5,7 @@ from understudy.api.rmp.data import get_professors, get_ratings
 from understudy.api.rmp.rating import Rating
 
 
-async def main():
+async def main() -> None:
     """
     Prefetches RMP data and loads it into the Mongo database.
     """

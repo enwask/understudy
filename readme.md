@@ -16,3 +16,8 @@ That's what understudy aims to provide: an accessible platform that puts all thi
 Understudy has two components; there's a service that periodically fetches available data from RateMyProfessor, Reddit, etc., collating information about UCF courses/professors, processing and storing the results in a Mongo database.
 
 The second component is what the end user sees; a Streamlit web app that compiles the data we've prefetched from the server and sends relevant details through an inference chain to generate comparisons and other useful information.
+
+
+## things I'd like to make it do
+
+- Better data utilization: I've got quite a bit of data I didn't have time to really utilize to the fullest extent. For example I have helpful/unhelpful votes on ratings which could be part of some heuristic for weighting reviews.
