@@ -1,9 +1,6 @@
 __all__ = ['Professor']
 
 
-from understudy.api.rmp.rating import Rating
-
-
 class Professor:
     """
     Describes a professor and associated classes/ratings information.
@@ -42,6 +39,22 @@ class Professor:
             'take_again': self.take_again,
             'courses': list(self.courses),
         }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'Professor':
+        """
+        Creates an instance from a dictionary.
+        """
+
+        return cls(
+            id=data['id'],
+            name=data['name'],
+            dept=data['dept'],
+            quality=data['quality'],
+            difficulty=data['difficulty'],
+            take_again=data['take_again'],
+            courses=set(data['courses']),
+        )
 
     def add_courses(self, *courses: str):
         """
