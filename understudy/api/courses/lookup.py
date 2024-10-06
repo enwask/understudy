@@ -92,4 +92,17 @@ def collect_sections(
             ratings=rating_set,
         ))
 
-    return res
+    # Avoid zero division
+    if len(res) == 0:
+        return res
+
+    # Parameters for weighted scoring function
+    C = sum(section.quality for section in res) / len(res)
+    m = 40  # arbitrary tuning parameter
+
+    # Weighted score for sorting
+    def score(section: Section) -> float:
+        return (section.quality * section.num_ratings + C * m) \
+            / (section.num_ratings + m)
+
+    return sorted(res, key=score, reverse=True)
