@@ -131,7 +131,7 @@ async def get_professors(school_id: str = _SCHOOL_ID) -> dict[str, Professor]:
 
         # Get professor nodes sequentially
         while len(nodes) < num:
-            # print("Fetching chunk", _ + 1, "of", num_chunks, "...")
+            # TODO: this fucking sucks
             res = await rmp.query(
                 queries.get_teachers,
                 **{
@@ -247,7 +247,10 @@ async def get_ratings_by_course(
                 if node['textbookUse'] == 1
                 else (False if node['textbookUse'] == 0 else None)
             ),
-            tags=set([tag.strip() for tag in node['ratingTags'].split('--') if tag]),
+            tags=set([
+                tag.strip().lower()
+                for tag in node['ratingTags'].split('--') if tag
+            ]),
         )
 
         # Construct the actual rating object
